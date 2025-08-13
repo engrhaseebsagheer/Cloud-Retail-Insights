@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+cat > .gitignore << 'EOF'
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# OS
+.DS_Store
+
+# Power BI
+*.pbix
+
+# Notebooks
+.ipynb_checkpoints/
+
+# VSCode
+.vscode/
+
+# Secrets (we'll use Key Vault anyway)
+secrets/
