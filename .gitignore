@@ -24,3 +24,6 @@ __pycache__/
 
 # Secrets (we'll use Key Vault anyway)
 secrets/
+
+#Ignore the keys
+.evn

@@ -40,3 +40,46 @@ TAG_PROJECT="project=$PROJECT"
 TAG_CC="cost-center=personal"
 
 tags are very useful for a proper organization, cost tracking, automation, and filtering based on the owner and env
+
+
+and now i went to create the azure storage account and before creating i made sure the name is available to create the storage account using command "az storage account check-name -n "$STORAGE"  -o table"
+and then the name was avialble then i used this command 
+az storage account create \
+  --name "$SA" \
+  --resource-group "$RG" \
+  --location "$REGION" \
+  --sku Standard_LRS \
+  --kind StorageV2 \
+  --hierarchical-namespace true \
+  --min-tls-version TLS1_2 \
+  --allow-blob-public-access false \
+  --tags "$TAG_ENV" "$TAG_OWNER" "$TAG_PROJECT" "$TAG_CC" \
+  -o table
+
+
+  to create the storage for myself and also i could have create this storage using directly the storage in azure portal but i prefered cli to master it :D 
+
+
+  then i created the standard containers in storage account using these commands:
+  ACCOUNT_KEY=$(az storage account keys list -g "$RG" -n "$SA" --query "[0].value" -o tsv)
+
+az storage container create --name raw       --account-name "$SA" --account-key "$ACCOUNT_KEY" -o table
+az storage container create --name processed --account-name "$SA" --account-key "$ACCOUNT_KEY" -o table
+az storage container create --name curated   --account-name "$SA" --account-key "$ACCOUNT_KEY" -o table
+az storage container create --name logs      --account-name "$SA" --account-key "$ACCOUNT_KEY" -o table
+
+the storage account and the containers in it succesffuly created
+
+
+now the next step is to create the Azure SQl both server and the database for storing the cleaned data. i did this by running following commands 
+Now created data factory using a tool called data factories on azure cloud, i did not use CLI commands here because it was causing too many errors so i prefered creating it from azure portal and it was creating successfully
+similarlary created azure databricks using azure portal for ease of use, it willuse for scalibility ETL or feature engineerings and notebook jobs
+
+
+and last  but not the least azure machine learning also known as AML workspace was added in resources using azure portal , i added it to track runs, register a forecasting model, and deploy an endpoint later. i was trying to store the azure machine learning data in existing create storage but it couldnt as the storage account has hirehcal data so it coulndt be used so i create new, and existing key vault was used for AML.
+
+added key vault to store values for sql connection etc, the key vault was creating some errors and i was not able to store new secrets or keys because i was not the admin (as its a student account) so my university administration is the owner, so i deleted this key vault resource and stored the useable values directly in .env file and in gitignore i mentioned not to add this as these are my personal credentails. 
+
+and finally i added these changes into github so my latest code can be viewed by anyone
+
+this is the end of day one i have been working on this project, time invested is more than 5 hours for day 1, as i am new to azure clouds tools. 
