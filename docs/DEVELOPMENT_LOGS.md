@@ -83,3 +83,28 @@ added key vault to store values for sql connection etc, the key vault was creati
 and finally i added these changes into github so my latest code can be viewed by anyone
 
 this is the end of day one i have been working on this project, time invested is more than 5 hours for day 1, as i am new to azure clouds tools. 
+
+Here comes day 2:
+to be honest day 2 was missed due to some personal issues.
+Day 3:
+first of all created multiple tables in sql database that is on azure portal, and i executed multiple queries of Create table to create tables and those queries are in sql/create_tables.sql file, one of them is as follow: 
+CREATE TABLE fact_sales (
+    SalesID INT IDENTITY PRIMARY KEY,
+    OrderID NVARCHAR(50),
+    CustomerID NVARCHAR(50),
+    ProductID NVARCHAR(50),
+    Region NVARCHAR(50),
+    OrderDate DATE,
+    ShipDate DATE,
+    Sales FLOAT,
+    Quantity INT,
+    Discount FLOAT,
+    Profit FLOAT
+);
+
+and these tables were created to store the strucuted data in the sql database server.
+And then i went to azure data factor, and there i created new resources linked and conneted my blob storage and sql database accountes there,and once i connected i created new author resources factory and created 2 datasets there 1 for csv file from blob storage and second for storing data from csv to sql tables and 1 new pipeline that will do that stuff, and i tested this pipeline and it worked and then i published all to make the data factory live. 
+then i created a new trigger for my pipeline and i used schedule type trigger it will auto refresh my datafrom blob storage and then convert it into sql schema, i did it becuase the data arrives daily for a shopkeeper, so we can get new reloaded fresh data.
+I added this TRUNCATE TABLE dbo.stg_sales; prescript in my sink tab of pipline so each time when new data is loaded or whenever i click debug it will erase the existing table's data and we get new fresh data without duplicates, if we don't add this script then we may get appended data (means always it will append the existing table + new data (that inlcudes that old data as well))
+
+then i monitored my piple and it was working perfectly :D
