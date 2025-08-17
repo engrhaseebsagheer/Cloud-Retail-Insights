@@ -16,8 +16,7 @@ __pycache__/
 # Power BI
 *.pbix
 
-# Notebooks
-.ipynb_checkpoints/
+
 
 # VSCode
 .vscode/
