@@ -1,93 +1,105 @@
-Project logs:
-Project Summary: "A cloud based retail analytics and forecasting system, it utilized most the data science and ml concept including eda, dataset, azure, sql, github, algorithams, etc"
+Project Summary: 
+"A cloud-based retail analytics and forecasting system. It utilized most of the data science and machine learning concepts including EDA, datasets, Azure, SQL, GitHub, algorithms, etc."
 
-First of all i create an azure account, and thank god i had the student id from my university and student email i used it to create a free azure student account that initally offers $100 free credits for 365 days and also it offers some additional free azure cloud services as well.
-Then i installed azure cli in my macOS terminal so i can manage the azure account from my MacOs terminal. I used the "brew update && brew install azure-cli" command to install the azure cli, and then using "az login" command i logged into my account and i had only 1 subscription in my account but still i usd  --subscription commant to set my current working subscripton for this project for a safe side., then i made a working direcotory for ths project using mkdir command and then started working on this directory on my MacOS
-I also initlize git into my project so i can utilize github version control system
+---
 
-My next task was to create an virtual envorioment or resources in azure account for my cloud retail insights with some variable names and tags.
+Day 1:
+First of all, I created an Azure account. Thank God I had a student ID from my university and a student email, so I used it to create a free Azure Student Account. This account initially offers $100 free credits for 365 days and also provides some additional free Azure cloud services.  
 
-i used series of command for this; first of all i made sure the azure account is logged in if not hen i logged in using az login:
-the commands for resource creation were:
-REGION="centralindia" i choose the physical location of my azure cloud services i choose the central india over uaenorth because it cheaper (as i am a student cant afford expensive one :D)
-although the uaenorth server is quite fast
-PROJECT="retail-analytics" to initlize the project roots (naming)
-then i used 
-ENV="dev"
-RG="rg-$PROJECT-$ENV" so after using this command my final name becoems
-rg-retail-analytics-dev becuase it feteched the variable values of
-PROJECT and ENV
-we defined the EVN so later we can working without collision between dev/prod
-STORAGE="stretaildev" command was useed to name my storage account it will be used to hold my preproceesed and proccesd data (csv etc)
-SQLSERVER="sqlsrv-retail-dev" 
-SQLDB="sqldb-retail-dev"
+Then, I installed Azure CLI on my macOS terminal so I could manage the Azure account directly from my system. I used the command:  
+`brew update && brew install azure-cli`  
 
-these two commands were used to create an Azure SQL server and it contqinas a azure sql database named "sqldb-retail-dev"
+After installation, I logged in using:  
+`az login`  
 
-DATAFACTORY="df-retail-dev"
- to create a datafactory to move data from Blob to SQL etc.
- to make a Azure Databrcks an pachae spark worspace was created using command "DATABRICKS="dbw-retail-dev"
-"
-it is big data friendly and calable data processing + feature enginering + model training (Spark MLib or PySpark + scikit-learn)
-a key vault was created to store the sql database credentails, connection string, api keys etc, so my app can directly read secrets from here instead of hardcoding them in pythong command used ="KEYVAULT="kv-retail-dev"
+I had only one subscription in my account, but for safety, I still used the `--subscription` command to set my current working subscription for this project.  
 
-I have also create an azure machine learning workspace to track ecperiments, register models, and deploy my trained model here as a REST API
+Next, I created a working directory for this project using the `mkdir` command and started working inside this directory. I also initialized Git in my project so I could use GitHub for version control.  
 
-I also used tags for resoruces by using following commands in series:
-TAG_ENV="env=$ENV"
-TAG_OWNER="owner=haseeb"
-TAG_PROJECT="project=$PROJECT"
-TAG_CC="cost-center=personal"
+---
 
-tags are very useful for a proper organization, cost tracking, automation, and filtering based on the owner and env
+My next task was to create a virtual environment (resources) in my Azure account for the cloud retail insights project, with variable names and tags for proper organization.  
 
+I used a series of commands for this. First, I ensured my Azure account was logged in, if not, I logged in using `az login`.  
 
-and now i went to create the azure storage account and before creating i made sure the name is available to create the storage account using command "az storage account check-name -n "$STORAGE"  -o table"
-and then the name was avialble then i used this command 
-az storage account create \
-  --name "$SA" \
-  --resource-group "$RG" \
-  --location "$REGION" \
-  --sku Standard_LRS \
-  --kind StorageV2 \
-  --hierarchical-namespace true \
-  --min-tls-version TLS1_2 \
-  --allow-blob-public-access false \
-  --tags "$TAG_ENV" "$TAG_OWNER" "$TAG_PROJECT" "$TAG_CC" \
-  -o table
+The commands for resource creation were:  
 
+- `REGION="centralindia"` → I chose the physical location of my Azure cloud services as Central India instead of UAE North, because it is cheaper (as I am a student, I cannot afford expensive ones 😀). Although the UAE North server is quite fast.  
+- `PROJECT="retail-analytics"` → to initialize the project roots (naming).  
+- `ENV="dev"`  
+- `RG="rg-$PROJECT-$ENV"` → so the final name becomes `rg-retail-analytics-dev`. This is because it fetched the values of PROJECT and ENV.  
 
-  to create the storage for myself and also i could have create this storage using directly the storage in azure portal but i prefered cli to master it :D 
+We defined ENV so that we can later work without collision between dev and prod environments.  
 
+- `STORAGE="stretaildev"` → used to name my storage account. It will be used to hold preprocessed and processed data (CSV files, etc.).  
+- `SQLSERVER="sqlsrv-retail-dev"`  
+- `SQLDB="sqldb-retail-dev"` → these two were used to create an Azure SQL server and its associated database.  
+- `DATAFACTORY="df-retail-dev"` → to create Data Factory for moving data from Blob to SQL.  
+- `DATABRICKS="dbw-retail-dev"` → to create an Azure Databricks workspace (Apache Spark). It is big data friendly and scalable for data processing, feature engineering, and model training (using Spark MLlib, PySpark, or scikit-learn).  
+- `KEYVAULT="kv-retail-dev"` → to create a Key Vault for storing SQL credentials, connection strings, API keys, etc. so that secrets are not hardcoded in Python.  
 
-  then i created the standard containers in storage account using these commands:
-  ACCOUNT_KEY=$(az storage account keys list -g "$RG" -n "$SA" --query "[0].value" -o tsv)
+I also created an Azure Machine Learning workspace to track experiments, register models, and deploy trained models as REST APIs.  
+
+---
+
+Tags were also created for all resources:  
+- `TAG_ENV="env=$ENV"`  
+- `TAG_OWNER="owner=haseeb"`  
+- `TAG_PROJECT="project=$PROJECT"`  
+- `TAG_CC="cost-center=personal"`  
+
+Tags are very useful for proper organization, cost tracking, automation, and filtering based on owner and environment.  
+
+---
+
+Next, I created the Azure Storage Account. Before creating, I ensured the name was available using:  
+`az storage account check-name -n "$STORAGE" -o table`  
+
+Once available, I created the storage account using:  
+
+```
+az storage account create   --name "$SA"   --resource-group "$RG"   --location "$REGION"   --sku Standard_LRS   --kind StorageV2   --hierarchical-namespace true   --min-tls-version TLS1_2   --allow-blob-public-access false   --tags "$TAG_ENV" "$TAG_OWNER" "$TAG_PROJECT" "$TAG_CC"   -o table
+```
+
+Although I could have created this directly in the Azure portal, I preferred using CLI to master it 😀.  
+
+Then I created standard containers inside the storage account using the following commands:  
+
+```
+ACCOUNT_KEY=$(az storage account keys list -g "$RG" -n "$SA" --query "[0].value" -o tsv)
 
 az storage container create --name raw       --account-name "$SA" --account-key "$ACCOUNT_KEY" -o table
 az storage container create --name processed --account-name "$SA" --account-key "$ACCOUNT_KEY" -o table
 az storage container create --name curated   --account-name "$SA" --account-key "$ACCOUNT_KEY" -o table
 az storage container create --name logs      --account-name "$SA" --account-key "$ACCOUNT_KEY" -o table
+```
 
-the storage account and the containers in it succesffuly created
+The storage account and containers were created successfully.  
 
+Next, I created the Azure SQL server and the database for storing cleaned data.  
 
-now the next step is to create the Azure SQl both server and the database for storing the cleaned data. i did this by running following commands 
-Now created data factory using a tool called data factories on azure cloud, i did not use CLI commands here because it was causing too many errors so i prefered creating it from azure portal and it was creating successfully
-similarlary created azure databricks using azure portal for ease of use, it willuse for scalibility ETL or feature engineerings and notebook jobs
+Data Factory was then created using the Azure portal (CLI was giving errors). It was successfully created. Similarly, Azure Databricks was also created via portal for ease of use.  
 
+Finally, I added Azure Machine Learning workspace (AML). It was added to track runs, register a forecasting model, and deploy endpoints later. I initially tried storing AML data in the previously created storage, but it failed because the storage account had hierarchical namespace enabled. So, I created a new one.  
 
-and last  but not the least azure machine learning also known as AML workspace was added in resources using azure portal , i added it to track runs, register a forecasting model, and deploy an endpoint later. i was trying to store the azure machine learning data in existing create storage but it couldnt as the storage account has hirehcal data so it coulndt be used so i create new, and existing key vault was used for AML.
+Key Vault: I tried to use it for storing values, but due to admin restrictions on the student account, I was not able to store new secrets. As a result, I deleted the Key Vault and stored the usable values directly in a `.env` file (excluded from Git using `.gitignore`).  
 
-added key vault to store values for sql connection etc, the key vault was creating some errors and i was not able to store new secrets or keys because i was not the admin (as its a student account) so my university administration is the owner, so i deleted this key vault resource and stored the useable values directly in .env file and in gitignore i mentioned not to add this as these are my personal credentails. 
+At the end of Day 1, I pushed the changes to GitHub so my latest code could be viewed.  
 
-and finally i added these changes into github so my latest code can be viewed by anyone
+⏱ Time invested on Day 1: More than 5 hours (as I am new to Azure cloud tools).  
 
-this is the end of day one i have been working on this project, time invested is more than 5 hours for day 1, as i am new to azure clouds tools. 
+---
 
-Here comes day 2:
-to be honest day 2 was missed due to some personal issues.
+Day 2:
+To be honest, Day 2 was missed due to some personal issues.  
+
+---
+
 Day 3:
-first of all created multiple tables in sql database that is on azure portal, and i executed multiple queries of Create table to create tables and those queries are in sql/create_tables.sql file, one of them is as follow: 
+- First of all, I created multiple tables in the SQL database (on Azure portal) using multiple `CREATE TABLE` queries. These are stored in `sql/create_tables.sql`.  
+
+Example:  
+```sql
 CREATE TABLE fact_sales (
     SalesID INT IDENTITY PRIMARY KEY,
     OrderID NVARCHAR(50),
@@ -101,10 +113,31 @@ CREATE TABLE fact_sales (
     Discount FLOAT,
     Profit FLOAT
 );
+```
 
-and these tables were created to store the strucuted data in the sql database server.
-And then i went to azure data factor, and there i created new resources linked and conneted my blob storage and sql database accountes there,and once i connected i created new author resources factory and created 2 datasets there 1 for csv file from blob storage and second for storing data from csv to sql tables and 1 new pipeline that will do that stuff, and i tested this pipeline and it worked and then i published all to make the data factory live. 
-then i created a new trigger for my pipeline and i used schedule type trigger it will auto refresh my datafrom blob storage and then convert it into sql schema, i did it becuase the data arrives daily for a shopkeeper, so we can get new reloaded fresh data.
-I added this TRUNCATE TABLE dbo.stg_sales; prescript in my sink tab of pipline so each time when new data is loaded or whenever i click debug it will erase the existing table's data and we get new fresh data without duplicates, if we don't add this script then we may get appended data (means always it will append the existing table + new data (that inlcudes that old data as well))
+- These tables were created to store structured data in the SQL database server.  
 
-then i monitored my piple and it was working perfectly :D
+- Next, I went to Azure Data Factory. There I created new linked resources and connected my Blob Storage and SQL Database accounts.  
+- Once connected, I authored new datasets:  
+  - One for CSV files from Blob Storage.  
+  - One for storing data into SQL tables.  
+- I also created a new pipeline to perform the data movement.  
+
+- I tested the pipeline and it worked. After that, I published everything to make the Data Factory live.  
+
+- Then, I created a new **trigger** for the pipeline. I used a **schedule trigger** so it would automatically refresh data from Blob Storage and load it into SQL tables daily (to simulate shopkeeper data arriving daily).  
+
+- I also added the following **pre-script** in the sink tab of the pipeline:  
+```sql
+TRUNCATE TABLE dbo.stg_sales;
+```  
+This ensures that every time the pipeline runs, old data is cleared and replaced with fresh data (avoiding duplicates). Without this, data would be appended every time.  
+
+- Finally, I monitored the pipeline and it was working perfectly 😀.  
+
+---
+
+Day 4:
+Created a new Databricks computer resource in azure databricks factory resource, it is used for ...... "[explain it now [prompt for AI]]"
+i was about to use the Azure Databricks but later i got issue that i don't have enogh CPU quota, so i need to drop the Databricks usage from the azure, unfortunately. and i redfined the architecture of the project. and my day 4 was revised :( 
+  so my next step was to build a processing layer in azure SQL  
