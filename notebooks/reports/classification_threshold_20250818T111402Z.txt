@@ -1,0 +1,1 @@
+High-sale threshold (train 80th percentile): 289.2000
